@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="user">
+	<insert id="insertUser" parameterType="com.ksk.fund.common.dto.UserVO">
+		INSERT INTO TB_PSX1120 (EMPNO, EMP_NM, PASSWORD, ENABLED, AUTHORITY)
+		VALUES(#{emp_no}, #{emp_nm}, #{password}, 1, #{authority})
+	</insert>
+</mapper>

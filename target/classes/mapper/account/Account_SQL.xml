@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="account">
+	<insert id="insertAccount" parameterType="com.ksk.fund.wts.dto.AccountVO">
+		INSERT INTO TB_PAM2030 (ACCT_NO, CUST_NO, FUND_CD, REMN_QTY, REMN_CAPI)
+		VALUES(#{acct_no}, #{cust_no}, #{fund_cd}, #{remn_qty}, #{remn_capi})
+	</insert>
+	
+	<select id="selectAccount" parameterType="String" resultType="com.ksk.fund.wts.dto.AccountVO"> 
+		SELECT 
+			* 
+		FROM
+			TB_PAM2030 
+		WHERE 
+			ACCT_NO = #{acct_no}
+	</select>
+	
+	<select id="selectAccountCount" parameterType="String" resultType="java.lang.Integer"> 
+		SELECT 
+			COUNT(*)
+		FROM
+			TB_PAM2030  
+		WHERE 
+			ACCT_NO = #{acct_no}
+	</select>
+	
+	<update id="updateAccountRemn" parameterType="com.ksk.fund.wts.dto.AccountVO">
+		UPDATE 
+			TB_PAM2030
+		SET 
+			REMN_QTY = #{remn_qty},
+			REMN_CAPI = #{remn_capi},
+			FIRST_BUY_DT = #{first_buy_dt, jdbcType=VARCHAR}
+		WHERE 
+			ACCT_NO = #{acct_no}
+	</update>
+	
+	<update id="updateAccountBuyLock" parameterType="com.ksk.fund.wts.dto.AccountVO">
+		UPDATE 
+			TB_PAM2030
+		SET 
+			BUY_LOCK_QTY = #{buy_lock_qty}
+		WHERE 
+			ACCT_NO = #{acct_no}
+	</update>
+	
+	<update id="updateLockQty" parameterType="com.ksk.fund.wts.dto.AccountVO">
+		UPDATE 
+			TB_PAM2030
+		SET 
+			BUY_LOCK_QTY = #{buy_lock_qty},
+			REDEM_LOCK_QTY = #{redem_lock_qty}
+		WHERE 
+			ACCT_NO = #{acct_no}
+	</update>
+</mapper>

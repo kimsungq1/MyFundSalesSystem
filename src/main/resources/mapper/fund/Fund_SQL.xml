@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fund">	
+	<select id="selectFundPrice" parameterType="String" resultType="java.lang.Integer"> 
+		SELECT 
+			STDPRC
+		FROM
+			TB_PFS1330  
+		WHERE 
+			FUND_CD = #{fund_cd}
+	</select>
+	
+	<select id="selectMatchNdays" parameterType="String" resultType="java.lang.Integer"> 
+		SELECT 
+			LT_BF_BUY_MATCH_NDAYS
+		FROM
+			TB_PFM1300  
+		WHERE 
+			FUND_CD = #{fund_cd}
+	</select>
+	
+	<select id="selectRedemNdays" parameterType="String" resultType="java.lang.Integer"> 
+		SELECT 
+			LT_BF_REDEM_SETL_NDAYS
+		FROM
+			TB_PFM1300  
+		WHERE 
+			FUND_CD = #{fund_cd}
+	</select>
+	
+	<select id="selectTargetCount" parameterType="String" resultType="java.lang.Integer"> 
+		SELECT 
+			COUNT(*)
+		FROM
+			TB_PDS2033  
+		WHERE 
+			SETL_PLAN_DT = #{today} AND SETL_CPLT_YN = 'N'
+	</select>
+	
+	<select id="selectTargetCount2" parameterType="String" resultType="java.lang.Integer"> 
+		SELECT 
+			COUNT(*)
+		FROM
+			TB_PDS2034  
+		WHERE 
+			SETL_PLAN_DT = #{today} AND SETL_CPLT_YN = 'N'
+	</select>
+	
+	<select id="selectTarget" parameterType="String" resultType="com.ksk.fund.wts.dto.PDS2033"> 
+		SELECT 
+			*
+		FROM
+			TB_PDS2033  
+		WHERE 
+			SETL_PLAN_DT = #{today} AND SETL_CPLT_YN = 'N'
+	</select>
+	
+	<select id="selectTarget2" parameterType="String" resultType="com.ksk.fund.wts.dto.PDS2034"> 
+		SELECT 
+			*
+		FROM
+			TB_PDS2034  
+		WHERE 
+			SETL_PLAN_DT = #{today} AND SETL_CPLT_YN = 'N'
+	</select>
+	
+	<select id="selectStdPrc" parameterType="com.ksk.fund.wts.dto.FundInfo" resultType="java.lang.Integer"> 
+		SELECT 
+			STDPRC
+		FROM
+			TB_PFS1330  
+		WHERE 
+			STD_DT = #{today} AND FUND_CD = #{fund_cd}
+	</select>
+	
+	<select id="selectStdAssStdPrc" parameterType="com.ksk.fund.wts.dto.FundInfo" resultType="java.lang.Integer"> 
+		SELECT 
+			STDASS_STDPRC
+		FROM
+			TB_PFS1330  
+		WHERE 
+			STD_DT = #{today} AND FUND_CD = #{fund_cd}
+	</select>
+	
+	<select id="selectStdAssStdPrc2032" parameterType="com.ksk.fund.wts.dto.FundInfo" resultType="java.lang.Integer"> 
+		SELECT DISTINCT
+			BUY_STDASS_STDPRC
+		FROM
+			TB_PDS2032  
+		WHERE 
+			ACCT_NO = #{acct_no} AND FUND_CD = #{fund_cd}
+	</select>
+	
+	<select id="selectStdPrcEstm" parameterType="String" resultType="java.lang.Integer"> 
+		SELECT 
+			STDPRC_ESTM_UNIT
+		FROM
+			TB_PFM1300  
+		WHERE 
+			FUND_CD = #{fund_cd}
+	</select>
+	
+	<select id="selectFee" parameterType="String" resultType="_double"> 
+		SELECT 
+			FEE_RT
+		FROM
+			TB_PFM1300  
+		WHERE 
+			FUND_CD = #{fund_cd}
+	</select>
+	
+	<insert id="insertPDS2033" parameterType="com.ksk.fund.wts.dto.PDS2033">
+		INSERT INTO TB_PDS2033 (ACCT_NO, TRD_DT, TRD_NO, FUND_CD, REQ_AMT, SETL_AMT, SETL_QTY, SETL_PLAN_DT, SETL_DT, SETL_CPLT_YN, SETL_ERR_CD, CANC_YN, WORK_DATETIME)
+		VALUES(#{ACCT_NO}, #{TRD_DT}, SEQ1.NEXTVAL ,#{FUND_CD}, #{REQ_AMT}, #{SETL_AMT}, #{SETL_QTY}, #{SETL_PLAN_DT}, #{SETL_DT}, #{SETL_CPLT_YN}, #{SETL_ERR_CD}, #{CANC_YN}, #{WORK_DATETIME})
+	</insert>
+	
+	<insert id="insertPDS3190" parameterType="com.ksk.fund.wts.dto.PDS3190">
+		INSERT INTO TB_PDS3190 (ACCT_NO, TRD_DT, TRD_NO, FUND_CD, TOT_SUPPLY_AMT, REDEM_QTY, REDEM_AMT, TRD_TOT_STDASS, TRD_TOT_INC_TAX, TRD_TOT_RESI_TAX, CANC_YN, WORK_DATETIME)
+		VALUES(#{ACCT_NO}, #{TRD_DT}, #{TRD_NO}, #{Fund_CD}, #{TOT_SUPPLY_AMT}, #{REDEM_QTY}, #{REDEM_AMT}, #{TRD_TOT_STDASS}, #{TRD_TOT_INC_TAX}, #{TRD_TOT_RESI_TAX}, #{CANC_YN}, #{WORK_DATETIME})
+	</insert>
+	
+	<update id="updatePDS2033" parameterType="com.ksk.fund.wts.dto.PDS2033">
+		UPDATE 
+			TB_PDS2033
+		SET 
+			SETL_AMT = #{SETL_AMT},
+			SETL_QTY = #{SETL_QTY},
+			SETL_DT = #{SETL_DT},
+			SETL_CPLT_YN = #{SETL_CPLT_YN}
+		WHERE 
+			ACCT_NO = #{ACCT_NO} AND TRD_NO = #{TRD_NO}
+	</update>
+	
+	<update id="updatePDS2034" parameterType="com.ksk.fund.wts.dto.PDS2034">
+		UPDATE 
+			TB_PDS2034
+		SET 
+			SETL_AMT = #{SETL_AMT},
+			SETL_QTY = #{SETL_QTY},
+			SETL_DT = #{SETL_DT},
+			SETL_CPLT_YN = #{SETL_CPLT_YN}
+		WHERE 
+			ACCT_NO = #{ACCT_NO} AND TRD_NO = #{TRD_NO}
+	</update>
+	
+	<insert id="insertPDS2034" parameterType="com.ksk.fund.wts.dto.PDS2034">
+		INSERT INTO TB_PDS2034 (ACCT_NO, TRD_DT, TRD_NO, FUND_CD, REDEM_GB, SETL_PLAN_DT, REQ_AMT, REQ_QTY, SETL_AMT, SETL_QTY, SETL_DT, SETL_CPLT_YN, SETL_ERR_CD, CANC_YN, WORK_DATETIME)
+		VALUES(#{ACCT_NO}, #{TRD_DT}, SEQ2.NEXTVAL ,#{FUND_CD}, #{REDEM_GB}, #{SETL_PLAN_DT}, #{REQ_AMT}, #{REQ_QTY}, #{SETL_AMT}, #{SETL_QTY}, #{SETL_DT}, #{SETL_CPLT_YN}, #{SETL_ERR_CD}, #{CANC_YN}, #{WORK_DATETIME})
+	</insert>
+	
+	<insert id="insertPDS2032" parameterType="com.ksk.fund.wts.dto.PDS2032">
+		INSERT INTO TB_PDS2032 (ACCT_NO, TRD_DT, TRD_NO, FUND_CD, BUY_GB, BUY_AMT, BUY_QTY, REMN_CAPI, REMN_QTY, SALE_FEE, BUY_STDPRC, BUY_STDASS_STDPRC, CANC_YN, WORK_DATETIME)
+		VALUES(#{ACCT_NO}, #{TRD_DT}, #{TRD_NO}, #{Fund_CD}, #{BUY_GB}, #{BUY_AMT}, #{BUY_QTY}, #{REMN_CAPI}, #{REMN_QTY}, #{SALE_FEE}, #{BUY_STDPRC}, #{BUY_STDASS_STDPRC}, #{CANC_YN}, #{WORK_DATETIME})
+	</insert>
+	
+	<select id="selectCPLTYN" parameterType="String" resultType="java.lang.Integer"> 
+		SELECT 
+			COUNT(*)
+		FROM
+			TB_PDS2033  
+		WHERE 
+			SETL_CPLT_YN = 'Y' AND SETL_DT = #{today}
+	</select>
+	
+	<select id="selectCPLTYN2" parameterType="String" resultType="java.lang.Integer"> 
+		SELECT 
+			COUNT(*)
+		FROM
+			TB_PDS2034  
+		WHERE 
+			SETL_CPLT_YN = 'Y' AND SETL_DT = #{today}
+	</select>
+</mapper>

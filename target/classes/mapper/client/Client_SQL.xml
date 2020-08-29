@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="client">
+	<insert id="insertClient" parameterType="com.ksk.fund.wts.dto.ClientVO">
+		INSERT INTO TB_PCM2000 (CUST_NO, CUST_NM, RNAME_NO_KIND, RNAME_NO,
+			HOME_ZIP_ADDR, CP_TELNO_NO, EMAIL_ADDR, INVEST_LV, USER_PASSWORD)
+		VALUES(#{cust_no}, #{cust_nm}, #{rname_no_kind}, #{rname_no}, 
+			#{home_addr}, #{cp_telno}, #{email_addr}, #{level_cd}, #{USER_PASSWORD})
+	</insert>
+	
+	<select id="selectClient" parameterType="String" resultType="com.ksk.fund.wts.dto.ClientVO"> 
+		SELECT 
+			*
+		FROM
+			TB_PCM2000 
+		WHERE 
+			CUST_NO = #{cust_no}
+	</select>
+	
+	<select id="selectClientCount" parameterType="String" resultType="java.lang.Integer"> 
+		SELECT 
+			COUNT(*)
+		FROM
+			TB_PCM2000 
+		WHERE 
+			CUST_NO = #{cust_no}
+	</select>
+</mapper>
